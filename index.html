@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>データ移行</title>
+    <script src="http://cdn.mlkcca.com/v2.0.0/milkcocoa.js"></script>
+    <script src=old_milkcocoa.js></script>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script>
+    $(function() {
+		var milkcocoaOld;
+		var milkcocoa;
+
+		$('#start').click(function() {
+			start( $('#old').val() , $('#new').val(), $('#ds').val());
+		});
+
+    	function start(old_app, new_app, datastore_name) {
+		    milkcocoaOld = new MilkCocoaOld('https://' + old_app + '.mlkcca.com');
+		    milkcocoa = new MilkCocoa(new_app + '.mlkcca.com');
+
+		    move_data(datastore_name, 0, function(page) {
+		    	$('#process').html( (page*1000) + '件の移動が完了' );
+		    },function() {
+		    	$('#process').html("終了しました。");
+		    });
+    	}
+
+
+	    function move_data(datastore_name, page, onProcess, onEnd) {
+	    	var dsOld = milkcocoaOld.dataStore(datastore_name);
+	    	var dsNew = milkcocoa.dataStore(datastore_name);
+		    dsOld.query({}).limit(1000).skip(page * 1000).done(function(prevs) {
+		    	if(prevs==null || prevs.length == 0) {
+		    		onEnd();
+		    		return;
+		    	}
+		    	prevs.forEach(function(prev_data) {
+		    		var id = prev_data.id;
+			    	delete prev_data.id;
+			    	delete prev_data._priority;
+			    	dsNew.set(id, prev_data);
+		    	});
+		    	setTimeout(function() {
+		    		var nextPage = page+1
+			    	onProcess(nextPage);
+		    		move_data(datastore_name, nextPage, onProcess, onEnd);
+		    	}, 1000);
+		    });
+	    }
+    })
+    </script>
+</head>
+<body>
+	<div>
+		<span>旧Milkcocoa</span>
+		<input id="old" type="text" />
+	</div>
+	<div>
+		<span>新Milkcocoa</span>
+		<input id="new" type="text" />
+	</div>
+	<div>
+		<span>データストア</span>
+		<input id="ds" type="text" />
+	</div>
+	<div>
+		<button id="start">開始</button>
+	</div>
+	<div>
+		<div id="process"></div>
+	</div>
+</body>
+</html>
