@@ -17,12 +17,18 @@
 		});
 
     	function start(old_app, new_app, datastore_name) {
+    		if(old_app.length < 3 || new_app.length < 3 || datastore_name.length < 1) {
+		    	$('#process').html("情報が未入力です。");
+    			return;
+    		}
+    		$('#start').prop("disabled", true);
 		    milkcocoaOld = new MilkCocoaOld('https://' + old_app + '.mlkcca.com');
 		    milkcocoa = new MilkCocoa(new_app + '.mlkcca.com');
 
 		    move_data(datastore_name, 0, function(page) {
 		    	$('#process').html( (page*1000) + '件の移動が完了' );
 		    },function() {
+	    		$('#start').prop("disabled", false);
 		    	$('#process').html("終了しました。");
 		    });
     	}
@@ -51,25 +57,68 @@
 	    }
     })
     </script>
+    <style>
+    .wrapper {
+    	width: 50%;
+    	margin: 24px;
+    }
+    .form-wrapper {
+    	margin-bottom: 10px;
+    	border: solid 1px #aaa;
+    	padding: 2px;
+    }
+    .form-wrapper input {
+    	font-size: 18px;
+    }
+    .btn {
+		text-decoration: none;
+		font-weight: bold;
+		text-align: center;
+		font-size: 13px;
+		display: block;
+		cursor: pointer;
+	}
+	.btn {
+		background: -moz-linear-gradient(top,#0099CC 0%,#006699);
+		background: -webkit-gradient(linear, left top, left bottom, from(#0099CC), to(#006699));
+		border: 1px solid #DDD;
+		color:#FFF;
+		width: 150px;
+		padding: 10px 0;
+	}
+	.btn:disabled {
+		background: -moz-linear-gradient(top,#00598C 0%,#002659);
+		background: -webkit-gradient(linear, left top, left bottom, from(#00598C), to(#002659));
+		color:#AAA;
+	}
+	.output {
+		margin: 5px;
+	}
+    </style>
 </head>
 <body>
-	<div>
-		<span>旧Milkcocoa</span>
-		<input id="old" type="text" />
-	</div>
-	<div>
-		<span>新Milkcocoa</span>
-		<input id="new" type="text" />
-	</div>
-	<div>
-		<span>データストア</span>
-		<input id="ds" type="text" />
-	</div>
-	<div>
-		<button id="start">開始</button>
-	</div>
-	<div>
-		<div id="process"></div>
+	<div class="wrapper">
+		<h1>Milkcocoaのデータストア移行スクリプト</h1>
+		<div class="form-wrapper">
+			<div>
+				<span>旧MilkcocoaのApp ID</span>
+				<input id="old" type="text" placeholder="io-????????"/>
+			</div>
+			<div>
+				<span>新MilkcocoaのApp ID</span>
+				<input id="new" type="text" placeholder="??????????"/>
+			</div>
+			<div>
+				<span>移行するデータストアの名前</span>
+				<input id="ds" type="text" />
+			</div>
+		</div>
+		<div>
+			<button id="start" class="btn">開始</button>
+		</div>
+		<div>
+			<div id="process" class="output"></div>
+		</div>
 	</div>
 </body>
 </html>
