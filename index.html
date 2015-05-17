@@ -59,7 +59,7 @@
     </script>
     <style>
     .wrapper {
-    	width: 50%;
+    	width: 640px;
     	margin: 24px;
     }
     .form-wrapper {
@@ -103,18 +103,25 @@
 <body>
 	<div class="wrapper">
 		<h1>Milkcocoaのデータストア移行スクリプト</h1>
+		<p>Milkcocoaのデータストア移行スクリプトです。このプログラムを実行する前に、移行元と移行先でセキュリティルールを以下のようにしてください。</p>
+		<pre><code>
+* {
+  permit: all;
+  rule: true;
+}
+		</code></pre>
 		<div class="form-wrapper">
 			<div>
 				<span>旧MilkcocoaのApp ID</span>
 				<input id="old" type="text" placeholder="io-????????"/>
 			</div>
 			<div>
-				<span>新MilkcocoaのApp ID</span>
-				<input id="new" type="text" placeholder="??????????"/>
+				<span>移行元のデータストアの名前</span>
+				<input id="ds" type="text" />
 			</div>
 			<div>
-				<span>移行するデータストアの名前</span>
-				<input id="ds" type="text" />
+				<span>新MilkcocoaのApp ID</span>
+				<input id="new" type="text" placeholder="??????????"/>
 			</div>
 		</div>
 		<div>
