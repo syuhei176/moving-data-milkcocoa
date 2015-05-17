@@ -70,6 +70,16 @@
     .form-wrapper input {
     	font-size: 18px;
     }
+    .pre-wrapper {
+    	margin: 8px;
+    	padding: 5px;
+    	border: solid 1px #aaa;
+    }
+    .next-wrapper {
+    	margin: 8px;
+    	padding: 5px;
+    	border: solid 1px #aaa;
+    }
     .btn {
 		text-decoration: none;
 		font-weight: bold;
@@ -110,18 +120,23 @@
   rule: true;
 }
 		</code></pre>
+		<p>以下を入力して、「開始」を押してください。</p>
 		<div class="form-wrapper">
-			<div>
-				<span>旧MilkcocoaのApp ID</span>
-				<input id="old" type="text" placeholder="io-????????"/>
+			<div class="pre-wrapper">
+				<div>
+					<span>旧MilkcocoaのApp ID</span>
+					<input id="old" type="text" placeholder="io-????????"/>
+				</div>
+				<div>
+					<span>移行元のデータストアの名前</span>
+					<input id="ds" type="text" />
+				</div>
 			</div>
-			<div>
-				<span>移行元のデータストアの名前</span>
-				<input id="ds" type="text" />
-			</div>
-			<div>
-				<span>新MilkcocoaのApp ID</span>
-				<input id="new" type="text" placeholder="??????????"/>
+			<div class="next-wrapper">
+				<div>
+					<span>新MilkcocoaのApp ID</span>
+					<input id="new" type="text" placeholder="??????????"/>
+				</div>
 			</div>
 		</div>
 		<div>
